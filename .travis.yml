@@ -11,11 +11,11 @@ before_script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 script:
-  - docker build -t joffreybvn/belgium-covid-map:latest .
+  - docker build -t joffreybvn/belgium-covid-dashboard:latest .
 
 deploy:
   provider: script
   script:
-    docker push joffreybvn/belgium-covid-map:latest;
+    docker push joffreybvn/belgium-covid-dashboard:latest;
   on:
     branch: master
