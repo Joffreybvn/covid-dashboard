@@ -1,6 +1,6 @@
 
 
-import pickle5 as pickle
+import pickle
 from typing import List, Tuple
 import streamlit as st
 import pydeck as pdk
