@@ -1,11 +1,12 @@
 
 
-import pickle
+import pickle5 as pickle
 from typing import List, Tuple
 import streamlit as st
 import pydeck as pdk
 import pandas as pd
 import time
+import cv2
 
 
 st.set_option("deprecation.showfileUploaderEncoding", False)
@@ -105,9 +106,37 @@ with row2_1:
             map_ph.pydeck_chart(get_map(cases[value - 2]))
 
 with row2_2:
-    st.write("""Hey, I'm a free space !""")
-    # This row2_2 is free
 
+    # create a variable for each graph
+    March2020 = cv2.imread('graph/MARCH2020.png')
+    April2020 = cv2.imread('graph/APRIL2020.png')
+    May2020 = cv2.imread('graph/May2020.png')
+    June2020 = cv2.imread('graph/June2020.png')
+    July2020 = cv2.imread('graph/July2020.png')
+    August2020 = cv2.imread('graph/August2020.png')
+    September2020 = cv2.imread('graph/September2020.png')
+    October2020 = cv2.imread('graph/October2020.png')
+    November2020 = cv2.imread('graph/November2020.png')
+    December2020 = cv2.imread('graph/December2020.png')
+    January2020 = cv2.imread('graph/Janauary2020.png')
+     
+    # create a list that contains all variables with graph 
+    months = [March2020,
+             April2020,
+             May2020,
+             June2020,
+             July2020,
+             August2020,
+             September2020,
+             October2020,
+             November2020,
+             December2020,
+             January2020]
+
+    month_selected = st.slider("Chose the month to know where the province with more and less cases", 0, 10)
+    
+    # display the graph according to the slider value
+    st.image(months[month_selected])
 
 
 
