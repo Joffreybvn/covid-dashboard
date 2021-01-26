@@ -3,7 +3,7 @@ FROM python:3.8-slim-buster
 # Install the security updates.
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get -y install git
+RUN apt-get -y install git libgl1-mesa-glx
 
 # Remove all cached file. Get a smaller image.
 RUN apt-get clean
