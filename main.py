@@ -1,9 +1,12 @@
 
-from os import environ
+
+import pickle
+from typing import List, Tuple
 import streamlit as st
 import pydeck as pdk
 import pandas as pd
-import numpy as np
+import time
+
 
 st.set_option("deprecation.showfileUploaderEncoding", False)
 st.beta_set_page_config(
@@ -12,26 +15,37 @@ st.beta_set_page_config(
 )
 
 
-# Loading map data
+# Load custom CSS
+def local_css(file_name):
+
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+
+# Loading datasets
+
 @st.cache(persist=True)
-def load_data(nrows):
-    # data = pd.read_csv(DATA_URL, nrows=nrows)
-    df = pd.DataFrame(np.random.randn(10000, 2) / [50, 50] + [50.5010789, 4.4764595], columns=['lat', 'lng'])
-    return df
+def load_map_data() -> Tuple[List[pd.DataFrame], int]:
+    """Load and return the covid cases dataset."""
+
+    with open('./datasets/clean/week_cases_location.p', 'rb') as handle:
+        cases_dfs = pickle.load(handle)
+
+    return cases_dfs, len(cases_dfs) - 1
 
 
-data = load_data(100000)
+cases, weeks = load_map_data()
 
 
-def display_map(dataframe: pd.DataFrame):
+def get_map(dataframe: pd.DataFrame) -> pdk.Deck:
     """Display a 3D aggregation map from given data."""
 
-    st.pydeck_chart(pdk.Deck(
+    return pdk.Deck(
         map_style='mapbox://styles/mapbox/light-v10',
         initial_view_state=pdk.ViewState(
             longitude=4.4764595,
             latitude=50.45,
-            zoom=8,
+            zoom=7.7,
             min_zoom=1,
             max_zoom=15,
             pitch=40.5,
@@ -41,24 +55,23 @@ def display_map(dataframe: pd.DataFrame):
             pdk.Layer(
                 "HexagonLayer",
                 data=dataframe,
-                get_position=["lng", "lat"],
+                get_position=["lat", "lng"],
                 auto_highlight=True,
                 elevation_scale=20,
                 pickable=True,
-                elevation_range=[0, 3000],
+                elevation_range=[0, 1000],
                 extruded=True,
                 coverage=1,
             )
         ],
-    ))
+    )
 
 
-# Top section
-row1_1, row1_2 = st.beta_columns((2, 3))
+# Header section
+row1_1, row1_2 = st.beta_columns((2, 4))
 
 with row1_1:
     st.title("Belgium Coronavirus Data")
-    week_selected = st.slider("Display covid cases at any given time", 0, 23)
 
 with row1_2:
     st.write("""
@@ -67,4 +80,36 @@ with row1_2:
     By sliding the slider on the left you can view different slices of time and explore different transportation trends.
     """)
 
-display_map(data)
+# Content section
+row2_1, row2_2 = st.beta_columns((4, 2))
+
+with row2_1:
+
+    # Create placeholders
+    slider_ph = st.empty()  # Slider
+    button_ph = st.empty()  # Button
+    map_ph = st.empty()  # Map
+
+    # Set a default slider
+    slider_text = f"Covid cases for week: "
+    value = slider_ph.slider(slider_text, 1, len(cases), 1, 1)
+    map_ph.pydeck_chart(get_map(cases[value - 1]))
+
+    # On click to "Animate", loop to refresh the map and iterate the slider
+    if button_ph.button('Run the animation'):
+
+        for _ in range(weeks):
+            time.sleep(.5)
+
+            value = slider_ph.slider(slider_text, 1, len(cases), value + 1, 1)
+            map_ph.pydeck_chart(get_map(cases[value - 2]))
+
+with row2_2:
+    st.write("""Hey, I'm a free space !""")
+    # This row2_2 is free
+
+
+
+
+# Load the custom CSS -- Keep at the very end of the file !
+local_css('./assets/style.css')
