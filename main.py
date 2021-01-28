@@ -109,16 +109,27 @@ with row2_2:
 
     # create a variable for each graph
     March2020 = cv2.imread('graph/MARCH2020.png')
+    March2020 = cv2.cvtColor(March2020, cv2.COLOR_RGB2BGR)
     April2020 = cv2.imread('graph/APRIL2020.png')
+    April2020 = cv2.cvtColor(April2020, cv2.COLOR_RGB2BGR)
     May2020 = cv2.imread('graph/May2020.png')
+    May2020 = cv2.cvtColor(May2020, cv2.COLOR_RGB2BGR)
     June2020 = cv2.imread('graph/June2020.png')
+    June2020 = cv2.cvtColor(June2020, cv2.COLOR_RGB2BGR)
     July2020 = cv2.imread('graph/July2020.png')
+    July2020 = cv2.cvtColor(July2020, cv2.COLOR_RGB2BGR)
     August2020 = cv2.imread('graph/August2020.png')
+    August2020 = cv2.cvtColor(August2020, cv2.COLOR_RGB2BGR)
     September2020 = cv2.imread('graph/September2020.png')
+    September2020 = cv2.cvtColor(September2020, cv2.COLOR_RGB2BGR)
     October2020 = cv2.imread('graph/October2020.png')
+    October2020 = cv2.cvtColor(October2020, cv2.COLOR_RGB2BGR)
     November2020 = cv2.imread('graph/November2020.png')
+    November2020 = cv2.cvtColor(November2020, cv2.COLOR_RGB2BGR)
     December2020 = cv2.imread('graph/December2020.png')
+    December2020 = cv2.cvtColor(December2020, cv2.COLOR_RGB2BGR)
     January2020 = cv2.imread('graph/Janauary2020.png')
+    January2020 = cv2.cvtColor(January2020, cv2.COLOR_RGB2BGR)
      
     # create a list that contains all variables with graph 
     months = [March2020,
