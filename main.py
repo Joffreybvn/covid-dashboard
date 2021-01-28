@@ -75,11 +75,7 @@ with row1_1:
     st.title("Belgium Coronavirus Data")
 
 with row1_2:
-    st.write("""
-    ##
-    Examining how Uber pickups vary over time in New York City's and at its major regional airports.
-    By sliding the slider on the left you can view different slices of time and explore different transportation trends.
-    """)
+    st.write(""".""")
 
 # Content section
 row2_1, row2_2 = st.beta_columns((4, 2))
